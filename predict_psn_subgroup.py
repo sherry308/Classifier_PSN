@@ -19,7 +19,7 @@ from sklearn.ensemble import RandomForestClassifier
 import joblib
 
 
-### Read input files 1. Expression 2. CNV and 3. Translocations. The given list of features should be there in files. We will extract the required features from each file and if any feature is not there the prgram will stop and throw the error message
+### Read input files 1. Translocations 2. CNV and 3. Expresssion. The given list of features should be there in files. We will extract the required features from each file and if any feature is not there the prgram will stop and throw the error message
 
 exp_file = sys.argv[1]
 cnv_file = sys.argv[2]
@@ -37,7 +37,20 @@ with open('CNV_features.tsv') as f:
 with open('translocation_features.tsv') as f:
     trans_list= f.read().splitlines()
     
-    
+cc=cnv.columns.values.tolist()
+c=len(list(set(cc).intersection(set(cnv_list))))
+if c != 50:
+        print("CNV Feature are missing. Please make sure all the features in  CNV_features.tsv is present in your Copy number variation input file ") # you will get an error
+            
+cc=exp.columns.values.tolist()
+c=len(list(set(cc).intersection(set(exp_list))))
+if c != 109:
+    print("Expression Feature are missing. Please make sure all the features in  expression_features.tsv is present in your expression input file ") # you will get an error
+                        
+cc=trans.columns.values.tolist()
+c=len(list(set(cc).intersection(set(trans_list))))
+if c != 8:
+    print("Translocations Feature are missing. Please make sure all the features in  translocation_features.tsv is present in your translocation input file ") # you will get an error
 # selecting the required features from  all the features 
 sel_exp=exp[exp_list]
 sel_cnv=cnv[cnv_list]
